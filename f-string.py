@@ -1,14 +1,20 @@
-def f_string(exp):  # 'a' + time + 'b' + nick + awa
+def f_string(exp, *, debug = False):  # 'a' + time + 'b' + nick + awa
     stack1 = []
     isInString = True if exp.startswith('"') or exp.startswith('\'') else False
     currentType = exp[0] if isInString else ''
     lastI = 0
     stringState = []
+    isEscape = False
     for i in range(len(exp)):
         char = exp[i]
 
+        if i >= 0 and isInString and exp[i-1] == '\\' and not isEscape:
+            isEscape = True
+        elif isEscape:
+            isEscape = False
+
         #print(isInString, char)
-        if (char == "'" or char == '"' or i == len(exp)-1) and i != 0:
+        if (char == "'" or char == '"' or i == len(exp)-1) and i != 0 and not isEscape:
 
             if i != len(exp)-1:
                 if (isInString and currentType == char):
@@ -31,10 +37,9 @@ def f_string(exp):  # 'a' + time + 'b' + nick + awa
             isInString = not isInString
             lastI = i
 
-    # print(stack1)
-    # print(stringState)
-
-    # yield stack1 # ['a', "' + time + '", 'b', "' + nick + awa"]
+    if debug:
+        print(stack1)
+        print(stringState)
 
     stack2 = []
 
@@ -47,11 +52,14 @@ def f_string(exp):  # 'a' + time + 'b' + nick + awa
             part = part.replace(' ', '')
             parts = part.split('+')
             for p in parts:
-                stack2.append(tuple([p]))
+                stack2.append((p,))
 
-    # yield stack2 # ['a',('time'),'b',('nick')]
+    stack2 = list(filter(lambda part: part != ('',),stack2))
 
-    fstring = "f'"
+    if debug:
+        print(stack2)
+
+    fstring = ''
 
     for i in range(len(stack2)):
         part = stack2[i]
@@ -60,12 +68,17 @@ def f_string(exp):  # 'a' + time + 'b' + nick + awa
         elif type(part) is tuple:
             fstring += '{' + part[0] + '}'
 
-    fstring += "'"
-
-    return fstring
+    return 'f'+repr(fstring)
 
 
-print(f_string("'a' + time + 'b' + nick + awa"))  # f'a{time}b{nick}{awa}'
-print(f_string("a + time + 'b' + nick + awa"))
+print(f_string("'a' + time + 'b' + nick.str() + awa[0]"))  # f'a{time}b{nick}{awa}'
+print(f_string("a + time + 'b' + nick + 'awa'"))
 print(f_string("'a' + time + 'b' + nick + 'awa'"))  # f'a{time}b{nick}awa'
-print(f_string("'a\"a\"' + time + \"b\" + nick + awa")) # f'a"a"{time}b{nick}{awa}'
+print(f_string("varName"))
+print(f_string("'some text'"))
+print(f_string("'some \\' text \\''"))
+print(f_string("'\\'some \\' text'"))
+print(f_string(r" ' Var ' + key + ' is ' + d[key] "))
+print(f_string(r''' 'a"a"' + time + "b" + nick + awa ''')) # f'a"a"{time}b{nick}{awa}'
+
+#print(f_string(input()))
