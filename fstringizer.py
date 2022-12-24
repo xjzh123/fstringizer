@@ -1,7 +1,7 @@
 def __extractStrings(exp):
     stack = []
     isInString = False
-    currentType = '' # exp[0] if isInString else ''
+    currentType = ''  # exp[0] if isInString else ''
     lastI = 0
     stringState = []
     isEscape = False
@@ -39,9 +39,13 @@ def __extractStrings(exp):
     return stack, stringState
 
 
-def fstringize(exp='++NOPARAMETER++', *, debug=False):  # 'a' + time + 'b' + nick + awa
+class __empty():
+    pass
 
-    assert exp != '++NOPARAMETER++' # If I don't give exp a default value and you just run this file, fire will raise FireExit. So I assert the default value so that just running this file can be distinguished from using command line wrongly and causing fire to raise FireExit. And then this assertion will be caught and you will be able to input your expression. 
+
+def fstringize(exp=__empty, *, debug=False):  # 'a' + time + 'b' + nick + awa
+
+    assert exp != __empty  # If I don't give exp a default value and you just run this file, fire will raise FireExit. So I assert the default value so that just running this file can be distinguished from using command line wrongly and causing fire to raise FireExit. And then this assertion will be caught and you will be able to input your expression.
 
     stack1, stringState = __extractStrings(exp)
 
@@ -65,7 +69,7 @@ def fstringize(exp='++NOPARAMETER++', *, debug=False):  # 'a' + time + 'b' + nic
     stack2 = list(filter(lambda part: part != ('',), stack2))
 
     if debug:
-        print('Strings and variables:',stack2)
+        print('Strings and variables:', stack2)
 
     fstring = ''
 
