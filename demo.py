@@ -1,6 +1,7 @@
 from fstringizer import demo, fstringize
 
 print(fstringize("'some text [' + time + '] some text ' + nick.str() + awa[0]"))
+print()
 
 demo('i')
 demo("date + time + ':' + nick + ' recorded to join ' + channel")
