@@ -79,10 +79,6 @@ def fstringize(exp='++NOPARAMETER++', *, debug=False):  # 'a' + time + 'b' + nic
     return 'f'+repr(fstring).replace('\\\\', '')
 
 
-def demo(exp):
-    print(exp, fstringize(exp), '', sep='\n')
-
-
 if __name__ == '__main__':
     import fire
     try:

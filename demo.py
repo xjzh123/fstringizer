@@ -1,4 +1,7 @@
-from fstringizer import demo, fstringize
+from fstringizer import fstringize
+
+def demo(exp):
+    print(exp, fstringize(exp), '', sep='\n')
 
 print(fstringize("'some text [' + time + '] some text ' + nick.str() + awa[0]"))
 print()

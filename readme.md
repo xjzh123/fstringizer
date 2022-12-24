@@ -70,16 +70,11 @@ There is a demo program:
 有一个演示程序：
 
 ```python
-# fstringizer.py
-...
+# demo.py
+from fstringizer import fstringize
+
 def demo(exp):
     print(exp, fstringize(exp), '', sep='\n')
-...
-```
-
-```python
-# demo.py
-from fstringizer import demo, fstringize
 
 print(fstringize("'some text [' + time + '] some text ' + nick.str() + awa[0]"))
 print()
