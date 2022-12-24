@@ -12,7 +12,7 @@ This tool can not convert f-string into string concatenation, or convert string 
 This tool may give strange outputs, but this should only happen when the input is not correct string concatenation expression.  
 如果你输入的都不是正确的字符串拼接表达式，这个工具的输出确实会很奇怪。否则，它的输出应该会是合法的f-string。
 
-```cmd
+```console
 > python fstringizer.py "a a" 
 f'{aa}'
 ```
@@ -52,7 +52,7 @@ You can use fstringizer in 3 ways:
 2. run and input  
    直接运行然后输入
 
-    ```cmd
+    ```console
     > python fstringizer.py
     Input your expression: '"A \'' + key + '\' is a \'so-called\' ' + d[key] + '" -- ' + name
     f'"A \'{key}\' is a \'so-called\' {d[key]}" -- {name}'
@@ -61,7 +61,7 @@ You can use fstringizer in 3 ways:
 3. run with parameter  
    带参数运行
 
-    ```cmd
+    ```console
     > python fstringizer.py "'\"A \'' + key + '\' is a \'so-called\' ' + d[key] + '\" -- ' + name" 
     f'"A \'{key}\' is a \'so-called\' {d[key]}" -- {name}'
     ```
