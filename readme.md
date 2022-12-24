@@ -9,6 +9,9 @@ However, this tool is just to help convert simple expressions. It is **NOT** mad
 This tool can not convert f-string into string concatenation, or convert string concatenation into `str.format()`. It can **ONLY** convert string concatenation into f-string.
 这个工具不能把f-string转换成字符串拼接，也不能把字符串拼接转换成`str.format()`。它**只能**把字符串拼接转换成f-string。
 
+The original purpose of this tool is to help beginners who didn't know f-string and wrote many string concatenation to switch to f-string so that their code will become more readable.
+这个工具的本意是帮助不知道f-string然后写了很多字符串拼接的新手把自己的代码改成用f-string的，这样代码就会更易读。
+
 Let's check out examples:
 让我们看看示例：
 
