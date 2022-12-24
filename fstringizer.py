@@ -1,5 +1,5 @@
-def f_string(exp, *, debug = False):  # 'a' + time + 'b' + nick + awa
-    stack1 = []
+def __extractStrings(exp):
+    stack = []
     isInString = True if exp.startswith('"') or exp.startswith('\'') else False
     currentType = exp[0] if isInString else ''
     lastI = 0
@@ -13,29 +13,35 @@ def f_string(exp, *, debug = False):  # 'a' + time + 'b' + nick + awa
         elif isEscape:
             isEscape = False
 
-        #print(isInString, char)
         if (char == "'" or char == '"' or i == len(exp)-1) and i != 0 and not isEscape:
 
             if i != len(exp)-1:
                 if (isInString and currentType == char):
                     currentType = ''
-                    stack1.append(exp[lastI+1:i])
+                    stack.append(exp[lastI+1:i])
                 elif not isInString:
                     currentType = char
-                    stack1.append(exp[lastI:i+1])
+                    stack.append(exp[lastI:i+1])
                 else:
                     continue
 
             else:
                 if isInString:
-                    stack1.append(exp[lastI+1:i])
+                    stack.append(exp[lastI+1:i])
                 else:
                     currentType = char
-                    stack1.append(exp[lastI:i+1])
+                    stack.append(exp[lastI:i+1])
 
             stringState.append(isInString)
             isInString = not isInString
             lastI = i
+
+    return stack, stringState
+
+
+def fstringize(exp, *, debug=False):  # 'a' + time + 'b' + nick + awa
+
+    stack1, stringState = __extractStrings(exp)
 
     if debug:
         print(stack1)
@@ -54,7 +60,7 @@ def f_string(exp, *, debug = False):  # 'a' + time + 'b' + nick + awa
             for p in parts:
                 stack2.append((p,))
 
-    stack2 = list(filter(lambda part: part != ('',),stack2))
+    stack2 = list(filter(lambda part: part != ('',), stack2))
 
     if debug:
         print(stack2)
@@ -68,17 +74,9 @@ def f_string(exp, *, debug = False):  # 'a' + time + 'b' + nick + awa
         elif type(part) is tuple:
             fstring += '{' + part[0] + '}'
 
-    return 'f'+repr(fstring)
+    return 'f'+repr(fstring).replace('\\\\', '')
 
 
-print(f_string("'a' + time + 'b' + nick.str() + awa[0]"))  # f'a{time}b{nick}{awa}'
-print(f_string("a + time + 'b' + nick + 'awa'"))
-print(f_string("'a' + time + 'b' + nick + 'awa'"))  # f'a{time}b{nick}awa'
-print(f_string("varName"))
-print(f_string("'some text'"))
-print(f_string("'some \\' text \\''"))
-print(f_string("'\\'some \\' text'"))
-print(f_string(r" ' Var ' + key + ' is ' + d[key] "))
-print(f_string(r''' 'a"a"' + time + "b" + nick + awa ''')) # f'a"a"{time}b{nick}{awa}'
+def demo(exp):
+    print(exp, fstringize(exp), '', sep='\n')
 
-#print(f_string(input()))
