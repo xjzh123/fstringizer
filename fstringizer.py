@@ -1,19 +1,19 @@
 def __extractStrings(exp):
     stack = []
-    isInString = True if exp.startswith('"') or exp.startswith('\'') else False
-    currentType = exp[0] if isInString else ''
+    isInString = False
+    currentType = '' # exp[0] if isInString else ''
     lastI = 0
     stringState = []
     isEscape = False
     for i in range(len(exp)):
         char = exp[i]
 
-        if i >= 0 and isInString and exp[i-1] == '\\' and not isEscape:
+        if i > 0 and isInString and exp[i-1] == '\\' and not isEscape:
             isEscape = True
         elif isEscape:
             isEscape = False
 
-        if (char == "'" or char == '"' or i == len(exp)-1) and i != 0 and not isEscape:
+        if (char == "'" or char == '"' or i == len(exp)-1) and not isEscape:
 
             if i != len(exp)-1:
                 if (isInString and currentType == char):
@@ -39,13 +39,15 @@ def __extractStrings(exp):
     return stack, stringState
 
 
-def fstringize(exp, *, debug=False):  # 'a' + time + 'b' + nick + awa
+def fstringize(exp='++NOPARAMETER++', *, debug=False):  # 'a' + time + 'b' + nick + awa
+
+    assert exp != '++NOPARAMETER++' # If I don't give exp a default value and you just run this file, fire will raise FireExit. So I assert the default value so that just running this file can be distinguished from using command line wrongly and causing fire to raise FireExit. And then this assertion will be caught and you will be able to input your expression. 
 
     stack1, stringState = __extractStrings(exp)
 
     if debug:
-        print(stack1)
-        print(stringState)
+        print('Strings and other expressions:', stack1)
+        print('Is the experssion a string:', stringState)
 
     stack2 = []
 
@@ -63,7 +65,7 @@ def fstringize(exp, *, debug=False):  # 'a' + time + 'b' + nick + awa
     stack2 = list(filter(lambda part: part != ('',), stack2))
 
     if debug:
-        print(stack2)
+        print('Strings and variables:',stack2)
 
     fstring = ''
 
@@ -80,3 +82,10 @@ def fstringize(exp, *, debug=False):  # 'a' + time + 'b' + nick + awa
 def demo(exp):
     print(exp, fstringize(exp), '', sep='\n')
 
+
+if __name__ == '__main__':
+    import fire
+    try:
+        fire.Fire(fstringize)
+    except AssertionError:
+        print(fstringize(input('Input your expression: ')))

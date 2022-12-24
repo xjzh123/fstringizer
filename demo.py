@@ -1,6 +1,8 @@
 from fstringizer import demo
 
-demo("'a' + time + 'b' + nick.str() + awa[0]")
+demo('a')
+demo("'a'")
+demo("'some text [' + time + '] some text ' + nick.str() + awa[0]")
 demo("date + time + ':' + nick + ' recorded to join ' + channel")
 demo("'a' + time + 'b' + nick + 'awa'")
 demo("varName")
