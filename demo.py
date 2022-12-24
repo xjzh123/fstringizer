@@ -12,7 +12,7 @@ with open('test.py', 'r', encoding='UTF-8') as fp:
     lines = fp.read().splitlines()
     noBlank = list(filter(
         lambda line:
-            len(line.split('#')[0].replace(' ', '').replace('	', '')) > 0,
+            len(line.split('#')[0].replace(' ', '').replace('\t', '')) > 0,
         lines
     ))
     for line in noBlank:
